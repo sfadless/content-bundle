@@ -1,0 +1,17 @@
+{
+  "name" : "sfadless-cmf/content-bundle",
+  "type" : "symfony-bundle",
+  "description": "",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "SfadlessCMF\\ContentBundle\\": "src"
+    }
+  },
+  "require": {
+    "symfony-cmf/routing-bundle": "^2.1",
+    "prodigious/sonata-menu-bundle": "^3.0",
+    "sfadless-cmf/admin-dashboard-bundle": "dev-master",
+    "sfadless-cmf/media-bundle": "dev-master"
+  }
+}

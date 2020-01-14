@@ -1,0 +1,49 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    sfadless_cmf.content.media_admin_extension:
+        class: SfadlessCMF\ContentBundle\Admin\MediaAdminExtension
+        tags:
+            - { name: sonata.admin.extension, target: sonata.media.admin.media }
+
+    sfadless_cmf.content.route_provider:
+        class: SfadlessCMF\ContentBundle\Routing\RouteProvider
+        arguments:
+            $em: '@doctrine.orm.entity_manager'
+
+    sfadless_cmf.content.page_controller:
+        class: SfadlessCMF\ContentBundle\Controller\PageController
+
+    SfadlessCMF\ContentBundle\Controller\MediaAdminController:
+        tags: ['controller.service_arguments']
+
+    SfadlessCMF\ContentBundle\Controller\BlockAdminController:
+        tags: ['controller.service_arguments']
+        arguments: ['@sfadless_cmf.content.content_provider']
+
+    sfadless_cmf.content.block_admin:
+        class: SfadlessCMF\ContentBundle\Admin\BlockAdmin
+        arguments: [~, SfadlessCMF\ContentBundle\Entity\Block, SfadlessCMF\ContentBundle\Controller\BlockAdminController, '@sfadless_cmf.content.content_provider']
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Блоки, group: 'Конструктор страниц', icon: '<i class="fa fa-cogs" aria-hidden="true"></i>' }
+
+    sfadless_cmf.content.region_admin:
+        class: SfadlessCMF\ContentBundle\Admin\RegionAdmin
+        arguments: [~, SfadlessCMF\ContentBundle\Entity\Region, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Регионы, group: 'Конструктор страниц', icon: '<i class="fa fa-cogs" aria-hidden="true"></i>' }
+
+    sfadless_cmf.content.region_has_block_admin:
+        class: SfadlessCMF\ContentBundle\Admin\RegionHasBlockAdmin
+        arguments: [~, SfadlessCMF\ContentBundle\Entity\RegionHasBlock, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false  }
+
+    sfadless_cmf.content.content_provider:
+        class: SfadlessCMF\ContentBundle\Block\ContentProvider\ContentProviderManager
+
+    SfadlessCMF\ContentBundle\Block\ContentProvider\CKEditorContentProvider:
+        tags:
+            - { name: !php/const SfadlessCMF\ContentBundle\DependencyInjection\Compiler\BlockContentProviderPass::BLOCK_CONTENT_PROVIDER_TAG, code: !php/const SfadlessCMF\ContentBundle\Block\ContentProvider\CKEditorContentProvider::CODE }

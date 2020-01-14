@@ -1,0 +1,7 @@
+<ul>
+    {% for item in menu.getMenuItems() %}
+        <li>
+            <a href="{{ item.getRoute }}">{{ item.getName() }}</a>
+        </li>
+    {% endfor %}
+</ul>

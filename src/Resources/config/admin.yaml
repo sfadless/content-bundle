@@ -1,0 +1,35 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    prodigious_sonata_menu.admin.menu:
+        class: '%sonata_menu.admins.menu%'
+        arguments: [~, '%sonata_menu.entity.menu%', ProdigiousSonataMenuBundle:Menu]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Меню, on_top: true, label_catalogue: ProdigiousSonataMenuBundle, icon: '<i class="fa fa-bars" aria-hidden="true"></i>' }
+        calls:
+            - [ setTranslationDomain, [ProdigiousSonataMenuBundle]]
+            - [ addChild, ['@prodigious_sonata_menu.admin.menu_item', 'menu']]
+
+    prodigious_sonata_menu.admin.menu_item:
+        class: '%sonata_menu.admins.menu_item%'
+        arguments: [~, '%sonata_menu.entity.menu_item%', ProdigiousSonataMenuBundle:MenuItem, '%sonata_menu.entity.menu%']
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, label_catalogue: ProdigiousSonataMenuBundle }
+        calls:
+            - [ setTranslationDomain, [ProdigiousSonataMenuBundle]]
+
+    sfadless_cmf.content.admin.tag:
+        class: SfadlessCMF\ContentBundle\Admin\TagAdmin
+        arguments: [~, SfadlessCMF\ContentBundle\Entity\Tag, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Теги, group: Контент, icon: '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>' }
+
+    sfadless_cmf.content.admin.content:
+      class: SfadlessCMF\ContentBundle\Admin\ContentAdmin
+      arguments: [~, SfadlessCMF\ContentBundle\Entity\Content, ~]
+      tags:
+          - { name: sonata.admin, manager_type: orm, label: Контент, group: Контент, icon: '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>' }
+      calls:
+          - [setTemplate, [edit, 'admin/content_edit.twig']]

@@ -1,0 +1,22 @@
+services:
+    sfadless_cmf.content.menu_block:
+        class: SfadlessCMF\ContentBundle\Block\Service\MenuBlockService
+        tags: [sonata.block]
+        arguments:
+            - '@templating.engine.twig'
+            - '@prodigious_sonata_menu.manager'
+
+    sfadless_cmf.content.content_block:
+        class: SfadlessCMF\ContentBundle\Block\Service\ContentBlockService
+        tags: [sonata.block]
+        arguments:
+            - '@templating.engine.twig'
+
+    sfadless_cmf.content.templating.helper:
+        class: SfadlessCMF\ContentBundle\Templating\Helper\ContentHelper
+        arguments: ['@sonata.block.templating.helper', '@sfadless_cmf.content.content_provider','@doctrine.orm.entity_manager']
+
+    sfadless_cmf.content.twig:
+        class: SfadlessCMF\ContentBundle\Twig\ContentExtension
+        arguments: ['@sfadless_cmf.content.templating.helper']
+        tags: [twig.extension]
